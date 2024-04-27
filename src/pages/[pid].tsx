@@ -1,11 +1,16 @@
 import fs from "fs/promises";
 import path from "path";
 
-export const getStaticProps = async (context: any) => {
-  const { params } = context;
+const getData = async () => {
   const filePath = path.join(process.cwd(), "data", "products.json");
   const jsonData = await fs.readFile(filePath, "utf8");
   const data = JSON.parse(jsonData);
+  return data;
+};
+
+export const getStaticProps = async (context: any) => {
+  const { params } = context;
+  const data = await getData();
   const product = data.products.find((pr: any) => pr.id === params.pid);
 
   if (!product) {
@@ -20,9 +25,7 @@ export const getStaticProps = async (context: any) => {
 };
 
 export const getStaticPaths = async () => {
-  const filePath = path.join(process.cwd(), "data", "products.json");
-  const jsonData = await fs.readFile(filePath, "utf8");
-  const data = JSON.parse(jsonData);
+  const data = await getData();
 
   return {
     paths: data.products.map((product: any) => {
