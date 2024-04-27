@@ -3,7 +3,6 @@ import Link from "next/link";
 import path from "path";
 
 export const getStaticProps = async (context: any) => {
-  console.log("getStaticProps");
   const filePath = path.join(process.cwd(), "data", "products.json");
   const jsonData = await fs.readFile(filePath, "utf8");
   const data = JSON.parse(jsonData);
@@ -38,7 +37,7 @@ function Home(props: any) {
         {products.map((product: any) => {
           return (
             <li key={product.id}>
-              <Link href={`/${product.id}`}>{product.title}</Link>
+              <Link href={`/products/${product.id}`}>{product.title}</Link>
             </li>
           );
         })}
